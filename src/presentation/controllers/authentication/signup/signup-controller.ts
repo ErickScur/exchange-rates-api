@@ -5,17 +5,12 @@ import {
   HttpRequest,
   HttpResponse,
   Validation,
-} from './signup-controller-protocols'
-import {
+  Authentication,
   badRequest,
   conflict,
   ok,
   serverError,
-} from '../../../helpers/http-helper'
-import {
-  Authentication,
-  InvalidParamError,
-} from '../login/login-controller-protocols'
+} from './signup-controller-protocols'
 
 export class SignUpController implements Controller {
   constructor(
@@ -31,10 +26,7 @@ export class SignUpController implements Controller {
         return badRequest(error)
       }
 
-      const { name, email, password, passwordConfirmation } = httpRequest.body
-
-      if (password !== passwordConfirmation)
-        return badRequest(new InvalidParamError('passwordConfirmation'))
+      const { name, email, password } = httpRequest.body
 
       const account = await this.addAccount.add({
         name,
