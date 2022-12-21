@@ -15,3 +15,8 @@ export const serverError = (error: Error): HttpResponse => ({
   statusCode: 500,
   body: new ServerError(error.stack),
 })
+
+export const conflict = (error: Error): HttpResponse => ({
+  statusCode: 409,
+  body: error,
+})

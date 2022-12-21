@@ -1,6 +1,15 @@
 import { AddAccount } from '../../../../domain/usecases/authentication/add-account'
-import { InvalidParamError, MissingParamError } from '../../../errors'
-import { badRequest, ok, serverError } from '../../../helpers/http-helper'
+import {
+  EmailInUseError,
+  InvalidParamError,
+  MissingParamError,
+} from '../../../errors'
+import {
+  badRequest,
+  conflict,
+  ok,
+  serverError,
+} from '../../../helpers/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
 
 export class SignUpController implements Controller {
@@ -31,10 +40,11 @@ export class SignUpController implements Controller {
         email,
         password,
       })
+      if (!account) return conflict(new EmailInUseError())
 
       return ok(account)
     } catch (error) {
-      return serverError(error)
+      throw error
     }
   }
 }
