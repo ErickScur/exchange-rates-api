@@ -12,12 +12,7 @@ const makeSut = (): sutTypes => {
     implements LoadAccountByEmailRepository
   {
     async loadByEmail(email: string): Promise<AccountModel> {
-      const account: AccountModel = {
-        id: 'any_id',
-        name: 'any_name',
-        email: 'any_email@mail.com',
-        password: 'any_password',
-      }
+      const account: AccountModel = makeFakeAccount()
       return new Promise((resolve) => resolve(account))
     }
   }
@@ -29,6 +24,16 @@ const makeSut = (): sutTypes => {
     sut,
     loadAccountByEmailRepositorystub,
   }
+}
+
+const makeFakeAccount = (): AccountModel => {
+  const account: AccountModel = {
+    id: 'any_id',
+    name: 'any_name',
+    email: 'any_email@mail.com',
+    password: 'any_password',
+  }
+  return account
 }
 
 describe('DbAuthentication UseCase', () => {
