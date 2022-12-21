@@ -16,10 +16,7 @@ export class PrismaInstance extends PrismaClient {
     await this.$connect()
   }
 
-  async cleanDatabase() {
-    if (env.enviroment === 'production') return
-    const models = Reflect.ownKeys(this).filter((key) => key[0] !== '_')
-
-    return Promise.all(models.map((modelKey) => this[modelKey].deleteMany()))
+  async disconnect(): Promise<void> {
+    await this.$disconnect()
   }
 }
