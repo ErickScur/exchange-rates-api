@@ -1,4 +1,5 @@
 import { AccountModel } from '../../../../domain/models/authentication/account'
+import { HashComparer } from '../../../protocols/criptography'
 import { Encrypter } from '../../../protocols/criptography/encrypter'
 import { LoadAccountByEmailRepository } from '../../../protocols/db/account/load-account-by-email-repository'
 import { DbAuthentication } from './db-authentication'
@@ -7,6 +8,7 @@ interface sutTypes {
   sut: DbAuthentication
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
   encrypterStub: Encrypter
+  hashComparerStub: HashComparer
 }
 
 const makeLoadAccountByEmail = (): LoadAccountByEmailRepository => {
@@ -33,15 +35,27 @@ const makeEncrypter = (): Encrypter => {
 const makeSut = (): sutTypes => {
   const loadAccountByEmailRepositoryStub = makeLoadAccountByEmail()
   const encrypterStub = makeEncrypter()
+  const hashComparerStub = makeHashComparer()
   const sut = new DbAuthentication(
     loadAccountByEmailRepositoryStub,
     encrypterStub,
+    hashComparerStub,
   )
   return {
     sut,
     loadAccountByEmailRepositoryStub,
     encrypterStub,
+    hashComparerStub,
   }
+}
+
+const makeHashComparer = (): HashComparer => {
+  class HashComparerStub implements HashComparer {
+    async compare(value: string, hashedValue: string): Promise<boolean> {
+      return true
+    }
+  }
+  return new HashComparerStub()
 }
 
 const makeFakeAccount = (): AccountModel => {
@@ -49,7 +63,7 @@ const makeFakeAccount = (): AccountModel => {
     id: 'any_id',
     name: 'any_name',
     email: 'any_email@mail.com',
-    password: 'any_password',
+    password: 'hashed_password',
   }
   return account
 }
@@ -109,5 +123,15 @@ describe('DbAuthentication UseCase', () => {
       password: 'any_password',
     })
     expect(accessToken).toBe('any_token')
+  })
+
+  test('Should call HashComparer with correct values', async () => {
+    const { sut, hashComparerStub } = makeSut()
+    const compareSpy = jest.spyOn(hashComparerStub, 'compare')
+    await sut.auth({
+      email: 'any_email@mail.com',
+      password: 'any_password',
+    })
+    expect(compareSpy).toHaveBeenCalledWith('any_password', 'hashed_password')
   })
 })
