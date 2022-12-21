@@ -16,3 +16,9 @@ model Account {
   email    String @unique
   password String
 }
+
+model Log {
+  id        String   @id @default(uuid())
+  stack     String
+  createdAt DateTime @default(now())
+}
