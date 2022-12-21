@@ -1,5 +1,5 @@
 import { DbAuthentication } from '../../../../../data/usecases/authentication/login/db-authentication'
-import { JwtAdapter } from '../../../../../infra/criptography/jwt-adapter'
+import { JwtAdapter } from '../../../../../infra/criptography/jwt-adapter/jwt-adapter'
 import { PrismaInstance } from '../../../../../infra/db/prisma/helpers/prisma-instance'
 import { AccountPrismaRepository } from '../../../../../infra/db/prisma/repositories/account/account-prisma-repository'
 import { LoginController } from '../../../../../presentation/controllers/authentication/login/login-controller'
