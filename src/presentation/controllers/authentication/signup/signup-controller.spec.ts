@@ -1,4 +1,4 @@
-import { ok } from '../../../helpers/http-helper'
+import { badRequest, ok } from '../../../helpers/http-helper'
 import { SignUpController } from './signup-controller'
 import {
   AddAccount,
@@ -194,6 +194,17 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError(''))
+  })
+
+  test('Should return 400 if Validation returns an error', async () => {
+    const { sut, validationStub } = makeSut()
+    jest
+      .spyOn(validationStub, 'validate')
+      .mockReturnValueOnce(new MissingParamError('any_field'))
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
   })
 
   test('Should call Validation with correct values', async () => {
