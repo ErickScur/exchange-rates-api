@@ -1,8 +1,6 @@
 import {
   AddAccount,
   EmailInUseError,
-  InvalidParamError,
-  MissingParamError,
   Controller,
   HttpRequest,
   HttpResponse,
@@ -14,11 +12,16 @@ import {
   ok,
   serverError,
 } from '../../../helpers/http-helper'
+import {
+  Authentication,
+  InvalidParamError,
+} from '../login/login-controller-protocols'
 
 export class SignUpController implements Controller {
   constructor(
     private readonly addAccount: AddAccount,
     private readonly validation: Validation,
+    private readonly authentication: Authentication,
   ) {}
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -40,7 +43,11 @@ export class SignUpController implements Controller {
       })
       if (!account) return conflict(new EmailInUseError())
 
-      return ok(account)
+      const accessToken = await this.authentication.auth({
+        email,
+        password,
+      })
+      return ok({ accessToken })
     } catch (error) {
       return serverError(error)
     }
