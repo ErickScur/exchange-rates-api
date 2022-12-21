@@ -12,7 +12,7 @@ const makeFakeAccount = (): AccountModel => {
     id: 'any_id',
     name: 'any_name',
     email: 'any_email@mail.com',
-    password: 'valid_password',
+    password: 'hashed_password',
   }
   return account
 }
@@ -89,7 +89,7 @@ describe('DbAddAccount Usecase', () => {
     expect(addAccountSpy).toHaveBeenCalledWith({
       name: 'valid_name',
       email: 'valid_email',
-      password: 'valid_password',
+      password: 'hashed_password',
     })
   })
 
