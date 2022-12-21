@@ -1,11 +1,12 @@
-import { AccountModel } from '../../../../domain/models/authentication/account'
+import { ok } from '../../../helpers/http-helper'
+import { SignUpController } from './signup-controller'
 import {
   AddAccount,
   AddAccountModel,
-} from '../../../../domain/usecases/authentication/add-account'
-import { InvalidParamError, MissingParamError } from '../../../errors'
-import { ok } from '../../../helpers/http-helper'
-import { SignUpController } from './signup-controller'
+  AccountModel,
+  MissingParamError,
+  InvalidParamError,
+} from './signup-controller-protocols'
 
 const makeSut = (): SutTypes => {
   const addAccountStub = makeAddAccount()

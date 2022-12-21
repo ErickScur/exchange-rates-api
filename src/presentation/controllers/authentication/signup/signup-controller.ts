@@ -1,16 +1,13 @@
-import { AddAccount } from '../../../../domain/usecases/authentication/add-account'
 import {
+  AddAccount,
   EmailInUseError,
   InvalidParamError,
   MissingParamError,
-} from '../../../errors'
-import {
-  badRequest,
-  conflict,
-  ok,
-  serverError,
-} from '../../../helpers/http-helper'
-import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
+  Controller,
+  HttpRequest,
+  HttpResponse,
+} from './signup-controller-protocols'
+import { badRequest, conflict, ok } from '../../../helpers/http-helper'
 
 export class SignUpController implements Controller {
   constructor(private readonly addAccount: AddAccount) {}
