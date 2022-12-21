@@ -4,7 +4,7 @@
   "description": "Voc� dever� implementar uma API Rest que seja capaz de realizar a convers�o entre duas moedas utilizando taxas de convers�es atualizadas de um servi�o externo.",
   "main": "index.js",
   "scripts": {
-    "start": "sucrase-node src/main/server.ts",
+    "dev": "ts-node-dev src/main/server.ts",
     "prepare": "husky install",
     "test": "jest",
     "test:staged": "jest --passWithNoTests",
@@ -41,10 +41,10 @@
     "lint-staged": "^13.1.0",
     "prettier": "^2.3.2",
     "prisma": "^4.8.0",
-    "sucrase": "^3.29.0",
     "supertest": "^6.3.3",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.4"
   },
   "dependencies": {
