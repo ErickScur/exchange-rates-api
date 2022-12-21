@@ -1,0 +1,20 @@
+{
+  "name": "recrutamento-conversor-nodejs-erickscur_gmail.com",
+  "version": "1.0.0",
+  "description": "Voc� dever� implementar uma API Rest que seja capaz de realizar a convers�o entre duas moedas utilizando taxas de convers�es atualizadas de um servi�o externo.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/recrutamento_jya_nodejs/recrutamento-conversor-nodejs-erickscur_gmail.com.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://bitbucket.org/recrutamento_jya_nodejs/recrutamento-conversor-nodejs-erickscur_gmail.com/issues"
+  },
+  "homepage": "https://bitbucket.org/recrutamento_jya_nodejs/recrutamento-conversor-nodejs-erickscur_gmail.com#readme"
+}
