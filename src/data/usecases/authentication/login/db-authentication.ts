@@ -2,17 +2,22 @@ import {
   Authentication,
   AuthenticationModel,
 } from '../../../../domain/usecases/authentication/authentication'
+import { Encrypter } from '../../../protocols/criptography/encrypter'
 import { LoadAccountByEmailRepository } from '../../../protocols/db/account/load-account-by-email-repository'
 
 export class DbAuthentication implements Authentication {
-  private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository
-
-  constructor(loadAccountByEmailRepository: LoadAccountByEmailRepository) {
-    this.loadAccountByEmailRepository = loadAccountByEmailRepository
-  }
+  constructor(
+    private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
+    private readonly encrypter: Encrypter,
+  ) {}
 
   async auth(authentication: AuthenticationModel): Promise<string> {
-    await this.loadAccountByEmailRepository.loadByEmail(authentication.email)
-    return null
+    const account = await this.loadAccountByEmailRepository.loadByEmail(
+      authentication.email,
+    )
+    if (!account) return null
+
+    const accessToken = await this.encrypter.encrypt(account.id)
+    return accessToken
   }
 }
