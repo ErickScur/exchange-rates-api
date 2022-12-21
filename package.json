@@ -4,6 +4,7 @@
   "description": "Voc� dever� implementar uma API Rest que seja capaz de realizar a convers�o entre duas moedas utilizando taxas de convers�es atualizadas de um servi�o externo.",
   "main": "index.js",
   "scripts": {
+    "start": "sucrase-node src/main/server.ts",
     "prepare": "husky install",
     "test": "jest",
     "test:staged": "jest --passWithNoTests",
