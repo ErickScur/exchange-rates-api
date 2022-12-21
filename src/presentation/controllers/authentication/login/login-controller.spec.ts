@@ -3,16 +3,30 @@ import {
   Controller,
   badRequest,
   MissingParamError,
+  Authentication,
+  AuthenticationModel,
 } from './login-controller-protocols'
 
 interface SutTypes {
   sut: Controller
+  authenticationStub: Authentication
+}
+
+const makeAuthentication = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async auth(authentication: AuthenticationModel): Promise<string> {
+      return 'any_token'
+    }
+  }
+  return new AuthenticationStub()
 }
 
 const makeSut = (): SutTypes => {
-  const sut = new LoginController()
+  const authenticationStub = makeAuthentication()
+  const sut = new LoginController(authenticationStub)
   return {
     sut,
+    authenticationStub,
   }
 }
 
