@@ -7,7 +7,12 @@ import {
   HttpRequest,
   HttpResponse,
 } from './signup-controller-protocols'
-import { badRequest, conflict, ok } from '../../../helpers/http-helper'
+import {
+  badRequest,
+  conflict,
+  ok,
+  serverError,
+} from '../../../helpers/http-helper'
 
 export class SignUpController implements Controller {
   constructor(private readonly addAccount: AddAccount) {}
@@ -41,7 +46,7 @@ export class SignUpController implements Controller {
 
       return ok(account)
     } catch (error) {
-      throw error
+      serverError(error)
     }
   }
 }
