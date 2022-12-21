@@ -4,7 +4,8 @@
   "description": "Voc� dever� implementar uma API Rest que seja capaz de realizar a convers�o entre duas moedas utilizando taxas de convers�es atualizadas de um servi�o externo.",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:staged": "jest"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "git-commit-msg-linter": "^4.4.0",
     "jest": "^29.3.1",
+    "lint-staged": "^13.1.0",
     "prettier": "^2.3.2",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
