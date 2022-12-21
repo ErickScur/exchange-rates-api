@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://bitbucket.org/recrutamento_jya_nodejs/recrutamento-conversor-nodejs-erickscur_gmail.com/issues"
   },
-  "homepage": "https://bitbucket.org/recrutamento_jya_nodejs/recrutamento-conversor-nodejs-erickscur_gmail.com#readme"
+  "homepage": "https://bitbucket.org/recrutamento_jya_nodejs/recrutamento-conversor-nodejs-erickscur_gmail.com#readme",
+  "devDependencies": {
+    "git-commit-msg-linter": "^4.4.0"
+  }
 }
