@@ -1,7 +1,6 @@
-import { ok } from 'assert'
 import { AddAccount } from '../../../../domain/usecases/authentication/add-account'
 import { InvalidParamError, MissingParamError } from '../../../errors'
-import { badRequest, serverError } from '../../../helpers/http-helper'
+import { badRequest, ok, serverError } from '../../../helpers/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
 
 export class SignUpController implements Controller {
@@ -33,10 +32,7 @@ export class SignUpController implements Controller {
         password,
       })
 
-      return {
-        statusCode: 200,
-        body: ok(account),
-      }
+      return ok(account)
     } catch (error) {
       return serverError(error)
     }
