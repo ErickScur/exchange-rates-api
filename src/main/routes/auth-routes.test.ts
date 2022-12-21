@@ -1,3 +1,4 @@
+import { hash } from 'bcrypt'
 import request from 'supertest'
 import { PrismaInstance } from '../../infra/db/prisma/helpers/prisma-instance'
 import app from '../config/app'
@@ -33,11 +34,13 @@ describe('Auth Routes', () => {
 
   describe('POST /login', () => {
     test('Should return 200 on login', async () => {
+      const password = await hash('valid_password', 12)
+
       await prismaInstance.account.create({
         data: {
           name: 'valid_name',
           email: 'valid_email@mail.mail',
-          password: 'valid_password',
+          password,
         },
       })
 
