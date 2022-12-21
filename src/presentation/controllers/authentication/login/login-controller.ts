@@ -5,6 +5,7 @@ import {
   badRequest,
   MissingParamError,
   Authentication,
+  unauthorized,
 } from './login-controller-protocols'
 
 export class LoginController implements Controller {
@@ -19,7 +20,10 @@ export class LoginController implements Controller {
       }
     }
 
-    await this.authentication.auth({ email, password })
+    const accessToken = await this.authentication.auth({ email, password })
+    if (!accessToken) {
+      return unauthorized()
+    }
     return null
   }
 }
