@@ -4,12 +4,12 @@ import { AccountPrismaRepository } from '../../../../../infra/db/prisma/reposito
 import { LoginController } from '../../../../../presentation/controllers/authentication/login/login-controller'
 import { Controller } from '../../../../../presentation/protocols'
 import env from '../../../../config/env'
-import { LogControllerDecorator } from '../../../../decorators/log-controller-decorator'
+import { makeLogControllerDecorator } from '../../../decorators/log-controller-decorator-factory'
 
 export const makeLoginController = (): Controller => {
   const repository = new AccountPrismaRepository()
   const jwtAdapter = new JwtAdapter(env.jwtSecret)
   const authentication = new DbAuthentication(repository, jwtAdapter)
   const loginController = new LoginController(authentication)
-  return new LogControllerDecorator(loginController)
+  return makeLogControllerDecorator(loginController)
 }
