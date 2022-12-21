@@ -6,6 +6,8 @@ import {
   AccountModel,
   MissingParamError,
   InvalidParamError,
+  ServerError,
+  HttpRequest,
 } from './signup-controller-protocols'
 
 const makeSut = (): SutTypes => {
@@ -36,6 +38,17 @@ const makeAddAccount = (): AddAccount => {
 interface SutTypes {
   sut: SignUpController
   addAccountStub: AddAccount
+}
+
+const makeFakeRequest = (): HttpRequest => {
+  return {
+    body: {
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password',
+      passwordConfirmation: 'any_password',
+    },
+  }
 }
 
 describe('SignUp Controller', () => {
@@ -156,5 +169,17 @@ describe('SignUp Controller', () => {
         id: 'valid_id',
       }),
     )
+  })
+
+  test('Should return 500 if AddAccount throws', async () => {
+    const { sut, addAccountStub } = makeSut()
+    jest.spyOn(addAccountStub, 'add').mockImplementation(() => {
+      throw new Error()
+    })
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError(''))
   })
 })
