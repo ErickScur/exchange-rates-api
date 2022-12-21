@@ -2,14 +2,16 @@ import { AddAccountRepository } from '../../../../../data/protocols/db/account/a
 import { LoadAccountByEmailRepository } from '../../../../../data/protocols/db/account/load-account-by-email-repository'
 import { AccountModel } from '../../../../../domain/models/authentication/account'
 import { AddAccountModel } from '../../../../../domain/usecases/authentication/add-account'
-import { prismaInstance } from '../../helpers/prisma-instance'
+import { PrismaInstance } from '../../helpers/prisma-instance'
 
 export class AccountPrismaRepository
   implements AddAccountRepository, LoadAccountByEmailRepository
 {
+  constructor(private readonly prismaInstance: PrismaInstance) {}
+
   async add(accountData: AddAccountModel): Promise<AccountModel> {
     try {
-      return await prismaInstance.account.create({
+      return await this.prismaInstance.account.create({
         data: accountData,
       })
     } catch (error) {
@@ -19,7 +21,7 @@ export class AccountPrismaRepository
 
   async loadByEmail(email: string): Promise<AccountModel> {
     try {
-      return await prismaInstance.account.findUnique({
+      return await this.prismaInstance.account.findUnique({
         where: { email },
       })
     } catch (error) {
