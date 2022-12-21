@@ -7,6 +7,7 @@ import {
   Authentication,
   unauthorized,
   serverError,
+  ok,
 } from './login-controller-protocols'
 
 export class LoginController implements Controller {
@@ -26,7 +27,8 @@ export class LoginController implements Controller {
       if (!accessToken) {
         return unauthorized()
       }
-      return null
+
+      return ok({ accessToken })
     } catch (error) {
       return serverError(error)
     }
