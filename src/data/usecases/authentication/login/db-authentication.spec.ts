@@ -1,8 +1,10 @@
-import { AccountModel } from '../../../../domain/models/authentication/account'
-import { HashComparer } from '../../../protocols/criptography'
-import { Encrypter } from '../../../protocols/criptography/encrypter'
-import { LoadAccountByEmailRepository } from '../../../protocols/db/account/load-account-by-email-repository'
+import { AccountModel } from '../add-account/db-add-account-protocols'
 import { DbAuthentication } from './db-authentication'
+import {
+  LoadAccountByEmailRepository,
+  Encrypter,
+  HashComparer,
+} from './db-authentication-protocols'
 
 interface sutTypes {
   sut: DbAuthentication
