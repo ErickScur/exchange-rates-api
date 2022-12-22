@@ -3,6 +3,7 @@ import {
   AccountModel,
   badRequest,
   MissingParamError,
+  unauthorized,
 } from '../../authentication/signup/signup-controller-protocols'
 import { CreateTransactionController } from './create-transaction-controller'
 
@@ -69,5 +70,21 @@ describe('CreateTransaction Controller', () => {
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
+  })
+
+  test('Should return 401 no user exists inside the request body', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = {
+      body: {
+        accountId: 'any-id',
+        originCurrency: 'any_currency',
+        originAmount: 10,
+        destinationCurrency: 'any_currency',
+        account: null,
+      },
+    }
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(unauthorized())
   })
 })
