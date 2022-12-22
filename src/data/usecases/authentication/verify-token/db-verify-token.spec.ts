@@ -83,4 +83,10 @@ describe('DbVerifyToken UseCase', () => {
     const response = await sut.verify('any_token')
     expect(response).toBe(null)
   })
+
+  test('Should return an account on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.verify('any_token')
+    expect(response).toEqual(makeFakeAccount())
+  })
 })
