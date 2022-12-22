@@ -73,4 +73,14 @@ describe('DbVerifyToken UseCase', () => {
     await sut.verify('any_token')
     expect(loadByIdSpy).toHaveBeenCalledWith('valid_id')
   })
+
+  test('Should return null if LoadAccountByIdRepository returns null', async () => {
+    const { sut, loadAccountByIdRepositoryStub } = makeSut()
+    jest
+      .spyOn(loadAccountByIdRepositoryStub, 'loadById')
+      .mockReturnValueOnce(null)
+
+    const response = await sut.verify('any_token')
+    expect(response).toBe(null)
+  })
 })
