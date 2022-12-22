@@ -1,5 +1,9 @@
 import { Controller, HttpRequest, Validation } from '../../../protocols'
-import { AccountModel } from '../../authentication/signup/signup-controller-protocols'
+import {
+  AccountModel,
+  badRequest,
+  MissingParamError,
+} from '../../authentication/signup/signup-controller-protocols'
 import { CreateTransactionController } from './create-transaction-controller'
 
 interface SutTypes {
@@ -54,5 +58,16 @@ describe('CreateTransaction Controller', () => {
 
     await sut.handle(httpRequest)
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return 400 if Validation returns an error', async () => {
+    const { sut, validationStub } = makeSut()
+    jest
+      .spyOn(validationStub, 'validate')
+      .mockReturnValueOnce(new MissingParamError('any_field'))
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
   })
 })
