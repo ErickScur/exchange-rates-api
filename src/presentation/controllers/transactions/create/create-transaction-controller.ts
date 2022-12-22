@@ -1,4 +1,4 @@
-import { badRequest } from '../../../helpers/http-helper'
+import { badRequest, unauthorized } from '../../../helpers/http-helper'
 import {
   Controller,
   HttpRequest,
@@ -11,9 +11,9 @@ export class CreateTransactionController implements Controller {
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     const error = this.validation.validate(httpRequest.body)
-    if (error) {
-      return badRequest(error)
-    }
+    if (error) return badRequest(error)
+
+    if (!httpRequest.body.account) return unauthorized()
     return null
   }
 }
