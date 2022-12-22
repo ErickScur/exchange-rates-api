@@ -39,7 +39,7 @@ const makeGetExchangeRatesStub = (): GetCurrenciesExchangeRate => {
       return new Promise((resolve) =>
         resolve({
           rate: 5.3,
-          result: 53,
+          result: 10,
         }),
       )
     }
@@ -102,5 +102,21 @@ describe('DbAddTransaction UseCase', () => {
     const promise = sut.add(makeFakeTransactionInput())
 
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call AddTransactionRepository with correct values', async () => {
+    const { sut, addTransactionRepositoryStub } = makeSut()
+    const addSpy = jest.spyOn(addTransactionRepositoryStub, 'add')
+
+    await sut.add(makeFakeTransactionInput())
+    expect(addSpy).toHaveBeenCalledWith({
+      accountId: 'any_id',
+      conversionRate: 5.3,
+      conversionRateLabel: '1 BRL -> 5.3 USD',
+      destinationAmount: 10,
+      destinationCurrency: 'USD',
+      originAmount: 53,
+      originCurrency: 'BRL',
+    })
   })
 })
