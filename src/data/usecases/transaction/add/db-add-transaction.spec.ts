@@ -131,4 +131,11 @@ describe('DbAddTransaction UseCase', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return a transaction on success', async () => {
+    const { sut } = makeSut()
+
+    const result = await sut.add(makeFakeTransactionInput())
+    expect(result).toEqual(makeFakeTransactionResponse())
+  })
 })
