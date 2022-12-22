@@ -9,6 +9,7 @@ import {
   badRequest,
   MissingParamError,
   ok,
+  serverError,
   unauthorized,
 } from '../../authentication/signup/signup-controller-protocols'
 import { CreateTransactionController } from './create-transaction-controller'
@@ -107,6 +108,17 @@ describe('CreateTransaction Controller', () => {
     expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
   })
 
+  test('Should return 500 if Validatiron throws', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
   test('Should return 401 no user exists inside the request body', async () => {
     const { sut } = makeSut()
 
@@ -144,5 +156,16 @@ describe('CreateTransaction Controller', () => {
 
     const response = await sut.handle(httpRequest)
     expect(response).toEqual(ok(makeFakeTransaction()))
+  })
+
+  test('Should return 500 if AddTransaction throws', async () => {
+    const { sut, addTransactionStub } = makeSut()
+    jest.spyOn(addTransactionStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
