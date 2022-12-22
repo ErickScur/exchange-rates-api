@@ -33,7 +33,7 @@ export class DbAddTransaction implements AddTransaction {
         destinationAmount: result,
       })
 
-      return null
+      return transactionReturn
     } catch (error) {
       throw error
     }
