@@ -59,4 +59,29 @@ describe('Account Prisma Repository', () => {
 
     expect(account).toBeFalsy()
   })
+
+  test('Should return an account on loadById success', async () => {
+    const sut = makeSut()
+    const { id } = await prismaInstance.account.create({
+      data: {
+        name: 'any_name',
+        email: 'any_mail@mail.mail',
+        password: 'any_password',
+      },
+    })
+    const account = await sut.loadById(id)
+
+    expect(account).toBeTruthy()
+    expect(account.id).toEqual(id)
+    expect(account.name).toBe('any_name')
+    expect(account.email).toBe('any_mail@mail.mail')
+    expect(account.password).toBe('any_password')
+  })
+
+  test('Should return null if loadById fails', async () => {
+    const sut = makeSut()
+    const account = await sut.loadById('invalid_id')
+
+    expect(account).toBeFalsy()
+  })
 })
