@@ -119,4 +119,16 @@ describe('DbAddTransaction UseCase', () => {
       originCurrency: 'BRL',
     })
   })
+
+  test('Should throw if AddTransactionRepository throws', async () => {
+    const { sut, addTransactionRepositoryStub } = makeSut()
+    jest
+      .spyOn(addTransactionRepositoryStub, 'add')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error())),
+      )
+    const promise = sut.add(makeFakeTransactionInput())
+
+    await expect(promise).rejects.toThrow()
+  })
 })
