@@ -91,4 +91,16 @@ describe('DbAddTransaction UseCase', () => {
       originAmount: 53,
     })
   })
+
+  test('Should throw if GetExchangeRates throws', async () => {
+    const { sut, getExchangeRatesStub } = makeSut()
+    jest
+      .spyOn(getExchangeRatesStub, 'getExchangeRate')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error())),
+      )
+    const promise = sut.add(makeFakeTransactionInput())
+
+    await expect(promise).rejects.toThrow()
+  })
 })
