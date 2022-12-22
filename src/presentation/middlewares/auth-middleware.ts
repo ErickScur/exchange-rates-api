@@ -1,6 +1,6 @@
 import { VerifyToken } from '../../domain/usecases/authentication/verify-token'
 import { AccessDeniedError } from '../errors/access-denied-error'
-import { forbidden } from '../helpers/http-helper'
+import { forbidden, ok } from '../helpers/http-helper'
 import { HttpRequest, HttpResponse, Middleware } from '../protocols'
 
 export class AuthMiddleware implements Middleware {
@@ -11,6 +11,16 @@ export class AuthMiddleware implements Middleware {
       const accessToken = httpRequest.headers?.['x-access-token']
       if (accessToken) {
         const account = await this.verifyToken.verify(accessToken)
+        if (account) {
+          if (!httpRequest.body) {
+            httpRequest.body = {
+              user: account,
+            }
+          } else {
+            httpRequest.body.user = account
+          }
+          return ok({ accountId: account.id })
+        }
       }
 
       return forbidden(new AccessDeniedError())
