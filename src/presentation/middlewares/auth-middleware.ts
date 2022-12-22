@@ -1,24 +1,17 @@
 import { VerifyToken } from '../../domain/usecases/authentication/verify-token'
 import { AccessDeniedError } from '../errors/access-denied-error'
 import { forbidden, ok } from '../helpers/http-helper'
-import { HttpRequest, HttpResponse, Middleware } from '../protocols'
+import { HttpResponse, Middleware } from '../protocols'
 
 export class AuthMiddleware implements Middleware {
   constructor(private readonly verifyToken: VerifyToken) {}
 
-  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle(httpRequest: AuthMiddleware.Request): Promise<HttpResponse> {
     try {
-      const accessToken = httpRequest.headers?.['x-access-token']
+      const { accessToken } = httpRequest
       if (accessToken) {
         const account = await this.verifyToken.verify(accessToken)
         if (account) {
-          if (!httpRequest.body) {
-            httpRequest.body = {
-              user: account,
-            }
-          } else {
-            httpRequest.body.user = account
-          }
           return ok({ accountId: account.id })
         }
       }
@@ -27,5 +20,12 @@ export class AuthMiddleware implements Middleware {
     } catch (error) {
       throw error
     }
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace AuthMiddleware {
+  export type Request = {
+    accessToken?: string
   }
 }

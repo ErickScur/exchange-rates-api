@@ -11,7 +11,7 @@ import { AuthMiddleware } from './auth-middleware'
 const makeFakeRequest = (): HttpRequest => {
   return {
     headers: {
-      'x-access-token': 'any_token',
+      authorization: 'Bearer any_token',
     },
   }
 }
