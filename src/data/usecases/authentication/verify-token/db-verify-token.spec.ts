@@ -68,12 +68,8 @@ describe('DbVerifyToken UseCase', () => {
   })
 
   test('Should call LoadAccountByIdRepository with correct value', async () => {
-    const { sut, decrypterStub, loadAccountByIdRepositoryStub } = makeSut()
+    const { sut, loadAccountByIdRepositoryStub } = makeSut()
     const loadByIdSpy = jest.spyOn(loadAccountByIdRepositoryStub, 'loadById')
-
-    jest
-      .spyOn(decrypterStub, 'decrypt')
-      .mockReturnValueOnce(new Promise((resolve) => resolve('valid_id')))
     await sut.verify('any_token')
     expect(loadByIdSpy).toHaveBeenCalledWith('valid_id')
   })
