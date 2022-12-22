@@ -7,7 +7,7 @@
     "dev": "ts-node-dev src/main/server.ts",
     "prepare": "husky install",
     "test": "npm run prepare:integration && jest --passWithNoTests --silent --noStackTrace --runInBand",
-    "test:staged": "npm run prepare:integration && jest --findRelatedTests",
+    "test:staged": "jest --findRelatedTests --passWithNoTests",
     "test:unit": "jest --config jest-unit.config.ts",
     "test:watch": "jest --watch jest-unit.config.ts",
     "test:ci": "npm run prepare:integration && jest --coverage",
