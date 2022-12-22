@@ -1,5 +1,5 @@
 import { AddTransaction } from '../../../../domain/usecases/transactions/add-transaction'
-import { badRequest, unauthorized } from '../../../helpers/http-helper'
+import { badRequest, ok, unauthorized } from '../../../helpers/http-helper'
 import {
   Controller,
   HttpRequest,
@@ -22,12 +22,12 @@ export class CreateTransactionController implements Controller {
     const { account, originCurrency, originAmount, destinationCurrency } =
       httpRequest.body
 
-    await this.addTransaction.add({
+    const transaction = await this.addTransaction.add({
       accountId: account.id,
       originCurrency,
       originAmount,
       destinationCurrency,
     })
-    return null
+    return ok(transaction)
   }
 }
