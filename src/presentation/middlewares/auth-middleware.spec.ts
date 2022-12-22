@@ -2,6 +2,7 @@ import { VerifyToken } from '../../domain/usecases/authentication/verify-token'
 import {
   AccountModel,
   forbidden,
+  ok,
 } from '../controllers/authentication/signup/signup-controller-protocols'
 import { AccessDeniedError } from '../errors/access-denied-error'
 import { HttpRequest } from '../protocols'
@@ -35,7 +36,7 @@ const makeVerifyToken = (): VerifyToken => {
   return new VerifyTokenStub()
 }
 
-const makeSut = (role?: string): SutTypes => {
+const makeSut = (): SutTypes => {
   const verifyTokenStub = makeVerifyToken()
   const sut = new AuthMiddleware(verifyTokenStub)
   return {
@@ -54,5 +55,28 @@ describe('Auth Middleware', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
+  })
+
+  test('Should call VerifyToken with correct accessToken', async () => {
+    const { sut, verifyTokenStub } = makeSut()
+    const loadSpy = jest.spyOn(verifyTokenStub, 'verify')
+    await sut.handle(makeFakeRequest())
+    expect(loadSpy).toHaveBeenCalledWith('any_token')
+  })
+
+  test('Should return 403 if VerifyToken returns null', async () => {
+    const { sut, verifyTokenStub } = makeSut()
+    jest
+      .spyOn(verifyTokenStub, 'verify')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(null)))
+
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
+  })
+
+  test('Should return 200 if VerifyToken returns an account', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(ok({ accountId: 'any_id' }))
   })
 })
