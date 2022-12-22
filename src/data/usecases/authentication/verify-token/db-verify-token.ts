@@ -11,7 +11,11 @@ export class DbVerifyToken implements VerifyToken {
 
   async verify(token: string): Promise<AccountModel> {
     const id = await this.decrypter.decrypt(token)
-    await this.loadAccountByIdRepository.loadById(id)
-    return null
+    if (!id) return null
+
+    const account = await this.loadAccountByIdRepository.loadById(id)
+    if (!account) return null
+
+    return account
   }
 }
