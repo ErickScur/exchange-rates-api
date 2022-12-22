@@ -17,7 +17,7 @@ describe('Account Prisma Repository', () => {
   })
 
   beforeEach(async () => {
-    await prismaInstance.account.deleteMany()
+    await prismaInstance.log.deleteMany()
   })
 
   test('Should create an error log on success', async () => {
