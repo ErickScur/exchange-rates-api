@@ -17,11 +17,22 @@ export class DbAddTransaction implements AddTransaction {
       const { accountId, destinationCurrency, originAmount, originCurrency } =
         transaction
 
-      await this.getExchangeRates.getExchangeRate({
+      const { rate, result } = await this.getExchangeRates.getExchangeRate({
         destinationCurrency,
         originAmount,
         originCurrency,
       })
+
+      const transactionReturn = await this.addTransactionRepository.add({
+        accountId,
+        destinationCurrency,
+        originAmount,
+        originCurrency,
+        conversionRate: rate,
+        conversionRateLabel: `1 ${originCurrency} -> ${rate} ${destinationCurrency}`,
+        destinationAmount: result,
+      })
+
       return null
     } catch (error) {
       throw error
