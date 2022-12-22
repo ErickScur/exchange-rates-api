@@ -11,14 +11,28 @@ datasource db {
 }
 
 model Account {
-  id       String @id @default(uuid())
-  name     String
-  email    String @unique
-  password String
+  id          String        @id @default(uuid())
+  name        String
+  email       String        @unique
+  password    String
+  Transaction Transaction[]
 }
 
 model Log {
   id        String   @id @default(uuid())
   stack     String
   createdAt DateTime @default(now())
+}
+
+model Transaction {
+  id                  String   @id @default(uuid())
+  account             Account  @relation(fields: [accountId], references: [id])
+  accountId           String
+  originCurrency      String
+  originAmount        Float
+  destinationCurrency String
+  destinationAmount   Float
+  conversionRate      Float
+  conversionRateLabel String
+  createdAt           DateTime @default(now())
 }
