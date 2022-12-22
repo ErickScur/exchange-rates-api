@@ -1,3 +1,8 @@
+import { TransactionModel } from '../../../../domain/models/transactions/transaction'
+import {
+  AddTransaction,
+  AddTransactionModel,
+} from '../../../../domain/usecases/transactions/add-transaction'
 import { Controller, HttpRequest, Validation } from '../../../protocols'
 import {
   AccountModel,
@@ -10,14 +15,43 @@ import { CreateTransactionController } from './create-transaction-controller'
 interface SutTypes {
   sut: Controller
   validationStub: Validation
+  addTransactionStub: AddTransaction
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
-  const sut = new CreateTransactionController(validationStub)
+  const addTransactionStub = makeAddTransaction()
+  const sut = new CreateTransactionController(
+    validationStub,
+    addTransactionStub,
+  )
   return {
     sut,
     validationStub,
+    addTransactionStub,
+  }
+}
+
+const makeAddTransaction = (): AddTransaction => {
+  class AddTransactionStub implements AddTransaction {
+    async add(transaction: AddTransactionModel): Promise<TransactionModel> {
+      return new Promise((resolve) => resolve(makeFakeTransaction()))
+    }
+  }
+  return new AddTransactionStub()
+}
+
+const makeFakeTransaction = (): TransactionModel => {
+  return {
+    id: 'any_id',
+    accountId: 'any_id',
+    conversionRate: 10,
+    conversionRateLabel: '1 -> 5.3',
+    createdAt: new Date(),
+    destinationAmount: 10,
+    destinationCurrency: 'USD',
+    originAmount: 53,
+    originCurrency: 'BRL',
   }
 }
 
@@ -86,5 +120,20 @@ describe('CreateTransaction Controller', () => {
     }
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(unauthorized())
+  })
+
+  test('Should call AddTransaction with correct values', async () => {
+    const { sut, addTransactionStub } = makeSut()
+    const validateSpy = jest.spyOn(addTransactionStub, 'add')
+
+    const httpRequest = makeFakeRequest()
+
+    await sut.handle(httpRequest)
+    expect(validateSpy).toHaveBeenCalledWith({
+      originCurrency: 'any_currency',
+      originAmount: 10,
+      destinationCurrency: 'any_currency',
+      accountId: 'any_id',
+    })
   })
 })
