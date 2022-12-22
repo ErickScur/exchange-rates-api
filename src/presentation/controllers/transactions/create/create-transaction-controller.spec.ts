@@ -8,6 +8,7 @@ import {
   AccountModel,
   badRequest,
   MissingParamError,
+  ok,
   unauthorized,
 } from '../../authentication/signup/signup-controller-protocols'
 import { CreateTransactionController } from './create-transaction-controller'
@@ -135,5 +136,13 @@ describe('CreateTransaction Controller', () => {
       destinationCurrency: 'any_currency',
       accountId: 'any_id',
     })
+  })
+
+  test('Should return a transaction on success', async () => {
+    const { sut } = makeSut()
+    const httpRequest = makeFakeRequest()
+
+    const response = await sut.handle(httpRequest)
+    expect(response).toEqual(ok(makeFakeTransaction()))
   })
 })
