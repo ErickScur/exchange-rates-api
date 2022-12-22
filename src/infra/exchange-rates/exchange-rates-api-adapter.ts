@@ -15,9 +15,10 @@ export class ExchangeRatesApiAdapter implements GetCurrenciesExchangeRate {
   }: GetCurrenciesExchangeRateModel): Promise<ExchangeRateModel> {
     try {
       const response = await axios.get(
-        `https://api.apilayer.com/exchangerates_data/convert?to=${destinationCurrency}&from=${originAmount}&amount=${originCurrency}`,
+        `https://api.apilayer.com/exchangerates_data/convert?to=${destinationCurrency}&from=${originCurrency}&amount=${originAmount}`,
         {
           headers: {
+            'Accept-Encoding': 'gzip,deflate,compress',
             apikey: this.apiKey,
           },
         },
