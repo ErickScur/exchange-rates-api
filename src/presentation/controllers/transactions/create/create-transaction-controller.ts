@@ -1,5 +1,10 @@
 import { AddTransaction } from '../../../../domain/usecases/transactions/add-transaction'
-import { badRequest, ok, unauthorized } from '../../../helpers/http-helper'
+import {
+  badRequest,
+  ok,
+  serverError,
+  unauthorized,
+} from '../../../helpers/http-helper'
 import {
   Controller,
   HttpRequest,
@@ -14,20 +19,24 @@ export class CreateTransactionController implements Controller {
   ) {}
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    const error = this.validation.validate(httpRequest.body)
-    if (error) return badRequest(error)
+    try {
+      const error = this.validation.validate(httpRequest.body)
+      if (error) return badRequest(error)
 
-    if (!httpRequest.body.account) return unauthorized()
+      if (!httpRequest.body.account) return unauthorized()
 
-    const { account, originCurrency, originAmount, destinationCurrency } =
-      httpRequest.body
+      const { account, originCurrency, originAmount, destinationCurrency } =
+        httpRequest.body
 
-    const transaction = await this.addTransaction.add({
-      accountId: account.id,
-      originCurrency,
-      originAmount,
-      destinationCurrency,
-    })
-    return ok(transaction)
+      const transaction = await this.addTransaction.add({
+        accountId: account.id,
+        originCurrency,
+        originAmount,
+        destinationCurrency,
+      })
+      return ok(transaction)
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }
