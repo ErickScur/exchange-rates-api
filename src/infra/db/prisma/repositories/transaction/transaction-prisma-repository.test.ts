@@ -17,6 +17,7 @@ describe('Transaction Prisma Repository', () => {
   })
 
   beforeEach(async () => {
+    await prismaInstance.account.deleteMany()
     await prismaInstance.transaction.deleteMany()
   })
 
