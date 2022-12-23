@@ -1,5 +1,6 @@
 import { TransactionModel } from '../../../../domain/models/transactions/transaction'
 import { GetTransactions } from '../../../../domain/usecases/transactions/get-transactions'
+import { unauthorized } from '../../../helpers/http-helper'
 import { GetAllTransactionsController } from './get-all-transactions-controller'
 
 const date = new Date()
@@ -68,5 +69,17 @@ describe('GetAllTransactions Controller', () => {
 
     await sut.handle(httpRequest)
     expect(getSpy).toHaveBeenCalledWith('any_id')
+  })
+
+  test('Should return 401 no user exists inside the request body', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = {
+      body: {
+        accountId: null,
+      },
+    }
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(unauthorized())
   })
 })
