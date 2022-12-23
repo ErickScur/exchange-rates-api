@@ -2,3 +2,4 @@ node_modules
 prisma/*.db
 *.db-journal
 coverage
+dist
