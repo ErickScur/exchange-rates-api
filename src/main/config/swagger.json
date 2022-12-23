@@ -1,0 +1,253 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Conversão de Moedas",
+    "description": "API de Conversão de Moedas",
+    "contact": {
+      "name": "Conversão de Moedas",
+      "email": "erickscur@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5050/api",
+      "description": "API de Desenvolvimento"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Autenticação"
+    },
+    {
+      "name": "Transações"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/signup": {
+      "post": {
+        "tags": ["Autenticação"],
+        "summary": "Cadastro de usuário",
+        "description": "Essa rota é responsável por cadastrar um usuário",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Nome do usuário"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email do usuário"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Senha do usuário"
+                  },
+                  "passwordConfirmation": {
+                    "type": "string",
+                    "description": "Confirmação de senha do usuário"
+                  }
+                }
+              },
+              "examples": {
+                "Cadastro": {
+                  "value": {
+                    "name": "Test",
+                    "email": "test@gmail.com",
+                    "password": "123456789",
+                    "passwordConfirmation": "123456789"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "accessToken": "Bearer Token"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Missing param: email"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["Autenticação"],
+        "summary": "Autenticação de usuário",
+        "description": "Essa rota é responsável por autenticar um usuário",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Email do usuário"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Senha do usuário"
+                  }
+                }
+              },
+              "examples": {
+                "Login": {
+                  "value": {
+                    "email": "test@gmail.com",
+                    "password": "123456789"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "accessToken": "Bearer Token"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "Missing param: email"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unathorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "UnauthorizedError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction": {
+      "post": {
+        "tags": ["Transações"],
+        "summary": "Realizar Transação",
+        "description": "Essa rota é responsável por realizar uma transação",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "originCurrency": {
+                    "type": "string",
+                    "description": "Moeda de origem"
+                  },
+                  "originAmount": {
+                    "type": "number",
+                    "description": "Quantidade da moeda de origem"
+                  },
+                  "destinationCurrency": {
+                    "type": "string",
+                    "description": "Moeda de destino"
+                  }
+                }
+              },
+              "examples": {
+                "Realizar Transação": {
+                  "value": {
+                    "originCurrency": "USD",
+                    "originAmount": 100,
+                    "destinationCurrency": "BRL"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "f53fab1d-01e7-4cda-b02c-4ca5dfa336f7",
+                  "accountId": "05411f67-1737-4301-85a9-f5d715ca621f",
+                  "originCurrency": "USD",
+                  "originAmount": 100,
+                  "destinationCurrency": "BRL",
+                  "destinationAmount": 516.1604,
+                  "conversionRate": 5.161604,
+                  "conversionRateLabel": "1 USD -> 5.161604 BRL",
+                  "createdAt": "2022-12-23T19:27:23.050Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Missing param: originCurrency"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unathorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "UnauthorizedError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
