@@ -1,5 +1,5 @@
 import { GetTransactions } from '../../../../domain/usecases/transactions/get-transactions'
-import { ok, unauthorized } from '../../../helpers/http-helper'
+import { ok, serverError, unauthorized } from '../../../helpers/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
 
 export class GetAllTransactionsController implements Controller {
@@ -15,7 +15,7 @@ export class GetAllTransactionsController implements Controller {
 
       return ok(transactions)
     } catch (error) {
-      throw error
+      return serverError(error)
     }
   }
 }

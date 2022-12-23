@@ -1,6 +1,6 @@
 import { TransactionModel } from '../../../../domain/models/transactions/transaction'
 import { GetTransactions } from '../../../../domain/usecases/transactions/get-transactions'
-import { ok, unauthorized } from '../../../helpers/http-helper'
+import { ok, serverError, unauthorized } from '../../../helpers/http-helper'
 import { GetAllTransactionsController } from './get-all-transactions-controller'
 
 const date = new Date()
@@ -89,5 +89,16 @@ describe('GetAllTransactions Controller', () => {
 
     const response = await sut.handle(httpRequest)
     expect(response).toEqual(ok(makeTransactionArray()))
+  })
+
+  test('Should return 500 if AddTransaction throws', async () => {
+    const { sut, getTransactionsStub } = makeSut()
+    jest.spyOn(getTransactionsStub, 'get').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
