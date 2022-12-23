@@ -34,6 +34,8 @@ const makeSut = (): SutTypes => {
   }
 }
 
+const date = new Date()
+
 const makeAddTransaction = (): AddTransaction => {
   class AddTransactionStub implements AddTransaction {
     async add(transaction: AddTransactionModel): Promise<TransactionModel> {
@@ -49,7 +51,7 @@ const makeFakeTransaction = (): TransactionModel => {
     accountId: 'any_id',
     conversionRate: 10,
     conversionRateLabel: '1 -> 5.3',
-    createdAt: new Date(),
+    createdAt: date,
     destinationAmount: 10,
     destinationCurrency: 'USD',
     originAmount: 53,
