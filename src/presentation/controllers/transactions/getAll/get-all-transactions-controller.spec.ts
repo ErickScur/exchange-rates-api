@@ -1,6 +1,6 @@
 import { TransactionModel } from '../../../../domain/models/transactions/transaction'
 import { GetTransactions } from '../../../../domain/usecases/transactions/get-transactions'
-import { unauthorized } from '../../../helpers/http-helper'
+import { ok, unauthorized } from '../../../helpers/http-helper'
 import { GetAllTransactionsController } from './get-all-transactions-controller'
 
 const date = new Date()
@@ -81,5 +81,13 @@ describe('GetAllTransactions Controller', () => {
     }
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(unauthorized())
+  })
+
+  test('Should return transactions on success', async () => {
+    const { sut } = makeSut()
+    const httpRequest = makeFakeRequest()
+
+    const response = await sut.handle(httpRequest)
+    expect(response).toEqual(ok(makeTransactionArray()))
   })
 })
