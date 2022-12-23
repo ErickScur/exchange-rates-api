@@ -5,11 +5,11 @@ import {
   ok,
 } from '../controllers/authentication/signup/signup-controller-protocols'
 import { AccessDeniedError } from '../errors/access-denied-error'
-import { HttpRequest } from '../protocols'
 import { AuthMiddleware } from './auth-middleware'
 
-const makeFakeRequest = (): HttpRequest => {
+const makeFakeRequest = () => {
   return {
+    accessToken: 'any_token',
     headers: {
       authorization: 'Bearer any_token',
     },

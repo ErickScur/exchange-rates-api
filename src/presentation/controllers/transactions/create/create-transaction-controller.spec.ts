@@ -76,9 +76,9 @@ const makeFakeAccount = (): AccountModel => {
   return account
 }
 
-const makeFakeRequest = (): HttpRequest => ({
+const makeFakeRequest = () => ({
   body: {
-    accountId: 'any-id',
+    accountId: 'any_id',
     originCurrency: 'any_currency',
     originAmount: 10,
     destinationCurrency: 'any_currency',
@@ -124,11 +124,10 @@ describe('CreateTransaction Controller', () => {
 
     const httpRequest = {
       body: {
-        accountId: 'any-id',
         originCurrency: 'any_currency',
         originAmount: 10,
         destinationCurrency: 'any_currency',
-        account: null,
+        accountId: null,
       },
     }
     const httpResponse = await sut.handle(httpRequest)

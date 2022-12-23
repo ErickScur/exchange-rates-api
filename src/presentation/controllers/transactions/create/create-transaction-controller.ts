@@ -23,13 +23,13 @@ export class CreateTransactionController implements Controller {
       const error = this.validation.validate(httpRequest.body)
       if (error) return badRequest(error)
 
-      if (!httpRequest.body.account) return unauthorized()
+      if (!httpRequest.body.accountId) return unauthorized()
 
-      const { account, originCurrency, originAmount, destinationCurrency } =
+      const { accountId, originCurrency, originAmount, destinationCurrency } =
         httpRequest.body
 
       const transaction = await this.addTransaction.add({
-        accountId: account.id,
+        accountId,
         originCurrency,
         originAmount,
         destinationCurrency,
