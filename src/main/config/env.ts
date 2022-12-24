@@ -4,4 +4,5 @@ export default {
   enviroment: process.env.ENVIROMENT || 'development',
   exchangeRatesApiKey:
     process.env.EXCHANGERATESAPIKEY || 'pURjhI8X2712Rn914aliM267GdtUp8oL',
+  port: process.env.PORT || 5050,
 }
