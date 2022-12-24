@@ -165,7 +165,7 @@
         }
       }
     },
-    "/transaction": {
+    "/transactions": {
       "post": {
         "tags": ["Transações"],
         "summary": "Realizar Transação",
@@ -242,6 +242,79 @@
               "application/json": {
                 "example": {
                   "name": "UnauthorizedError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "Access Denied"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Transações"],
+        "summary": "Obter Transações",
+        "description": "Essa rota é responsável por retornar as transações do usuário logado",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": "f53fab1d-01e7-4cda-b02c-4ca5dfa336f7",
+                    "accountId": "05411f67-1737-4301-85a9-f5d715ca621f",
+                    "originCurrency": "USD",
+                    "originAmount": 100,
+                    "destinationCurrency": "BRL",
+                    "destinationAmount": 516.1604,
+                    "conversionRate": 5.161604,
+                    "conversionRateLabel": "1 USD -> 5.161604 BRL",
+                    "createdAt": "2022-12-23T19:27:23.050Z"
+                  },
+                  {
+                    "id": "f53fab1d-01e7-4cda-b02c-4ca5dfa336f7",
+                    "accountId": "05411f67-1737-4301-85a9-f5d715ca621f",
+                    "originCurrency": "USD",
+                    "originAmount": 100,
+                    "destinationCurrency": "BRL",
+                    "destinationAmount": 516.1604,
+                    "conversionRate": 5.161604,
+                    "conversionRateLabel": "1 USD -> 5.161604 BRL",
+                    "createdAt": "2022-12-23T19:27:23.050Z"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Unathorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "UnauthorizedError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "Access Denied"
                 }
               }
             }
