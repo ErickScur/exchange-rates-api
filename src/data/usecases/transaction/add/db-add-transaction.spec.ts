@@ -16,6 +16,8 @@ interface SutTypes {
   addTransactionRepositoryStub: AddTransactionRepository
 }
 
+const date = new Date()
+
 const makeSut = (): SutTypes => {
   const getExchangeRatesStub = makeGetExchangeRatesStub()
   const addTransactionRepositoryStub = makeAddTransactionRepositoryStub()
@@ -62,7 +64,7 @@ const makeFakeTransactionResponse = (): TransactionModel => {
     accountId: 'any_id',
     conversionRate: 10,
     conversionRateLabel: '1 -> 5.3',
-    createdAt: new Date(),
+    createdAt: date,
     destinationAmount: 10,
     destinationCurrency: 'USD',
     originAmount: 53,
