@@ -7,7 +7,7 @@ import { makeAuthMiddleware } from '../factories/middlewares/auth-middleware/aut
 
 export default (router: Router): void => {
   router.post(
-    '/transaction',
+    '/transactions',
     adaptMiddleware(makeAuthMiddleware()),
     adaptRoute(makeCreateTransactionController()),
   )
