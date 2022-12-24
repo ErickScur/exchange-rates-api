@@ -1,50 +1,136 @@
 # Conversor de moedas
 
-VocÍ dever· implementar uma API Rest que seja capaz de realizar a convers„o entre duas moedas
-utilizando taxas de conversıes atualizadas de um serviÁo externo.
+## Live application:
 
-Para realizaÁ„o da convers„o È necess·rio o ID do usu·rio que deseja realizar a convers„o.
+https://erick-scur-api-exchange-rates.up.railway.app/api-docs/
 
-A API dever· registrar cada transaÁ„o de convers„o com todas as informaÁıes relacionadas e tambÈm
-disponibilizar um endpoint para consulta das transaÁıes realizadas por um usu·rio.
+<br>
 
-O projeto dever· ser feito em Node.js com TypeScript.
+## Como rodar a aplica√ß√£o:
 
-1. Deve ser possÌvel realizar a convers„o entre 4 moedas no mÌnimo (BRL, USD, EUR, JPY);
-1. As taxas de convers„o devem ser obtidas de [https://api.exchangeratesapi.io/latest?base=USD];
-1. As transaÁıes de convers„o devem ser persistidas no banco de dados (embedded) contendo:
-    * ID do usu·rio;
-    * Moeda origem;
-    * Valor origem;
-    * Moeda destino;
-    * Taxa de convers„o utilizada;
-    * Data/Hora UTC;
-1. Uma transaÁ„o com sucesso deve retornar:
-    * ID da transaÁ„o
-    * ID do usu·rio;
-    * Moeda origem;
-    * Valor origem;
-    * Moeda destino;
-    * Valor destino;
-    * Taxa de convers„o utilizada;
-    * Data/Hora UTC;
-1. Uma transaÁ„o com falha conhecida deve retornar um erro HTTP 400 com a descriÁ„o da falha;
-1. Dever· existir um endpoint para listagem de todas as transaÁıes realizadas por usu·rio;
-1. Deve haver uma cobertura satisfatÛria de testes;
-1. Deve-se adicionar a esse arquivo explicaÁıes sobre como rodar a aplicaÁ„o, e uma apresentaÁ„o sobre o
-projeto: propÛsito, features, motivaÁ„o das principais escolhas de tecnologias, e separaÁ„o das camadas;
-1. Todo o cÛdigo deve ser em inglÍs;
-1. Disponibilizar o cÛdigo apenas nesse repositÛrio, sem nenhuma cÛpia p˙blica, para evitar pl·gio;
+<br>
 
-## Itens desej·veis
-* Logs
-* Tratamento de exceÁıes
-* DocumentaÁ„o
-* Coes„o de commits
-* Mensagens de commits claras
-* ConfiguraÁ„o de lint
-* Testes unit·rios
-* Testes de integraÁ„o
-* DocumentaÁ„o dos endpoints
-* Estar rodando e disponÌvel (Ex: Heroku, ou similar)
-* CI/CD
+### Op√ß√£o 1 (Docker):
+
+1 - Gerar uma build:
+
+```
+docker build -t exchange-rates .
+```
+
+2 - Iniciar o container:
+
+```
+docker run -p 5050:5050 .
+```
+
+### Op√ß√£o 2 (Sem Docker):
+
+1 - Instalar as dependencias:
+
+```
+npm install
+```
+
+2 - Iniciar a aplica√ß√£o:
+
+```
+npm run start:prod
+```
+
+<br>
+
+## Executando os testes automatizados:
+
+Rodar todos os testes:
+
+```
+npm run test
+```
+
+Rodar testes unit√°rios:
+
+```
+npm run test:unit
+```
+
+Rodar testes de integra√ß√£o:
+
+```
+npm run test:integration
+```
+
+<br>
+
+## Apresenta√ß√£o geral da aplica√ß√£o:
+
+<br>
+
+### Prop√≥sito:
+
+O prop√≥sito principal no desenvolvimento desse projeto foi demonstrar meu conhecimento e habilidade no desenvolvimento de APIs REST utilizando Node e TypeScript, bem como a aplica√ß√£o dos conceitos de Clean Architecture, Test Driven Development, Clean Code e S.O.L.I.D
+
+<br>
+
+### Features:
+
+- Cadastrar Usu√°rio;
+- Autentica√ß√£o;
+- Verifica√ß√£o de usu√°rio atrav√©s de seu Bearer Token;
+- Criptografia de senha;
+- Registrar Transa√ß√£o;
+- Consulta de taxas de convers√£o em servi√ßo externo;
+- Consultar Transa√ß√µes;
+- Testes Automatizados;
+
+<br>
+
+### Escolha das tecnologias:
+
+- Express: √â um framework amplamente utilizado para constru√ß√£o de APIs REST com Node, por√©m, poderia ser substituido pelo Fastify;
+- Prisma: Object Relational Mapper (ORM) √© uma √≥tima ferramente para realizar a comunica√ß√£o com diversos tipos de bancos de dados;
+- Axios: Cliente HTTP baseado em Promise para o navegador e Node.js;
+- jsonwebtoken: Lib utilizada para gera√ß√£o de tokens de autentica√ß√£o;
+- Bcrypt: Lib utilizada para realizar a criptografia e verifica√ß√£o de senhas;
+
+Como foram utilizados os princ√≠pios da Clean Architecture, esse projeto pode facilmente se adaptar facilmente para utilizar qualquer tecnologia externa, por exemplo, se quisermos trocar do Express para Fastify, ser√£o feitas poucas altera√ß√µes, devido ao fato da aplica√ß√£o isolar as camadas externas.
+
+<br>
+
+### Separa√ß√£o de camadas:
+
+#### Domain:
+
+Camada principal e mais interna da aplica√ß√£o, nela que ficam as entidades, interfaces e casos de uso, nela que s√£o definidas as regras de neg√≥cio da aplica√ß√£o.
+
+#### Presentation:
+
+Essa camada √© a parte onde acontece a intera√ß√£o com requisi√ß√µes externas. Essa camada √© a porta de entrada para os efeitos que um ser humano, um aplicativo ou uma mensagem ter√£o no dom√≠nio. As solicita√ß√µes ser√£o aceitas dessa camada e a resposta ser√° moldada nessa camada e exibida ao usu√°rio.
+
+#### Data:
+
+Camada respons√°vel por implementar os protocolos dos casos de uso presentes na camada de dom√≠nio, nela s√£o injetados os reposit√≥rios vindos da camada de infra para realizar a comunica√ß√£o com banco de dados.
+
+#### Infra:
+
+Esta camada √© a que acessa servi√ßos externos, como banco de dados, sistemas de mensagens e servi√ßos de e-mail.
+
+#### Main:
+
+Essa camada √© respons√°vel por instanciar as classes vindas das outras camadas, injetando as depend√™ncias e expondo as rotas da API.
+
+<br>
+
+## Itens desej√°veis
+
+- Logs: Com a implementa√ß√£o da classe LogControllerDecorator, todo erro de servidor ser√° armazenado em uma tabela de logs no banco de dados.
+- Tratamento de exce√ß√µes: O tratamento de erros ocorre utilizando helpers para disparar erros HTTP com seus respectivos status code, tamb√©m existem os Validators, que s√£o respons√°veis por validar o corpo recebido da requisi√ß√£o e disparar erros caso algo esteja inv√°lido.
+- Documenta√ß√£o
+- Coes√£o de commits: Foram feitos commits pequenos, com pequenas incrementa√ß√µes, para assim ter um melhor controle do processo de desenvolvimento.
+- Mensagens de commits claras: Foi utilizado a biblioteca "git-commit-msg-linter" para padronizar as mensagens dos commits com os seus respectivos prefixos.
+- Configura√ß√£o de lint: Foram utilizados as libs eslint e prettier. O eslint tem como objetivo encontrar erros no c√≥digo para assim realizar a corre√ß√£o. O prettier foi utilizado para formatar o c√≥digo e manter um padr√£o de formata√ß√£o em todo o projeto.
+- Testes unit√°rios: Utilizado o JEST para realizar testes unit√°rios, buscando testar as regras de neg√≥cio de cada classe da aplica√ß√£o, e buscando uma boa cobertura de testes.
+- Testes de integra√ß√£o: Utilizado o JEST e o supertest para simular requisi√ß√µes feitas para a API, utilizando tamb√©m um banco de dados de testes, para assim, n√£o influenciar nos dados presentes no banco real.
+- Documenta√ß√£o dos endpoints: Documenta√ß√£o pode ser encontrada em: https://erick-scur-api-exchange-rates.up.railway.app/api-docs/
+- Estar rodando e dispon√≠vel: A aplica√ß√£o est√° rodando na plataforma Railway e pode ser encontrada em: https://erick-scur-api-exchange-rates.up.railway.app/api-docs/
+- CI/CD
