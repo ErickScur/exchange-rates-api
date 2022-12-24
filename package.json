@@ -15,7 +15,8 @@
     "test:watch": "jest --watch jest-unit.config.ts",
     "test:ci": "npm run prepare:integration && jest --coverage",
     "test:integration": "npm run prepare:integration && jest -i --no-cache --config jest-integration.config.ts",
-    "prepare:integration": "dotenv -e .env.test -- prisma migrate deploy"
+    "prepare:integration": "dotenv -e .env.test -- prisma migrate deploy",
+    "deploy": "railway up && railway run npx prisma migrate deploy"
   },
   "husky": {
     "pre-commit": "lintstaged"
